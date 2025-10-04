@@ -7,13 +7,14 @@ import Series from './pages/Series';
 import Favorites from './pages/Favorites';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Detail from './pages/Detail';
+import {showNotification} from './components/Notification';
 
-// --- Authentication Status Simulation ---
-// Change this value to see how the header changes
+
 const isLoggedIn = false;
-// ---------------------------------------------
 
-// Simple router
+
+
 const routes = {
   '/': Home,
   '/movies': Movies,
@@ -21,56 +22,68 @@ const routes = {
   '/favorites': Favorites,
   '/login': Login,
   '/register': Register,
+  '/detail/:id': Detail,
 };
 
 const router = () => {
-  const path = window.location.pathname;
-  const pageContent = document.getElementById('page-content');
+  const path            = window.location.pathname;
+  const pageContent     = document.getElementById('page-content');
   const headerContainer = document.getElementById('header-container');
   
-  // Find the component for the current path, or default to Home
-  const page = routes[path] || routes['/'];
+  let page = routes['/']; 
+  let params = {};
+
+  for (const routePath in routes) {
+    const routeParts = routePath.split('/').filter(p => p);
+    const pathParts = path.split('/').filter(p => p);
+
+    if (routeParts.length === pathParts.length) {
+      const match = routeParts.every((part, i) => {
+        if (part.startsWith(':')) {
+          params[part.substring(1)] = pathParts[i];
+          return true;
+        }
+        return part === pathParts[i];
+      });
+
+      if (match) {
+        page = routes[routePath];
+        break;
+      }
+    }
+  }
   
-  // Re-render header with the current path to update active link
   if (headerContainer) {
     headerContainer.innerHTML = Header(isLoggedIn, path);
-    // If logged in, re-attach the user menu listener after re-rendering the header
     if (isLoggedIn) {
       addUserMenuListener();
     }
   }
   if (pageContent) {
-    pageContent.innerHTML = page();
+    pageContent.innerHTML = page(params);
   }
 };
 
 function renderLayout() {
   const footerContainer = document.getElementById('footer-container');
-
-  // Initial render
   if (footerContainer) {
     footerContainer.innerHTML = Footer();
   }
   router();
-  
-  // Set up navigation listener once
   addNavigationListener();
+  showNotification('movie');
 }
 
 function addUserMenuListener() {
   const userMenuButton = document.getElementById('user-menu-button');
   const userMenu = document.getElementById('user-menu');
-
-  // This check is important because the menu button only exists when logged in
   if (!userMenuButton) return;
-
   userMenuButton.addEventListener('click', () => {
     userMenu.classList.toggle('hidden');
   });
 }
 
 function addNavigationListener() {
-  // Handle navigation clicks
   document.body.addEventListener('click', e => {    
     if (e.target.matches('[href^="/"]')) {
       e.preventDefault();
@@ -79,9 +92,5 @@ function addNavigationListener() {
     }
   });
 }
-
-// Render the layout when the DOM is ready
 document.addEventListener('DOMContentLoaded', renderLayout);
-
-// Handle back/forward browser buttons
 window.addEventListener('popstate', router);

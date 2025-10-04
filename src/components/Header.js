@@ -33,7 +33,7 @@ const Header = (isLoggedIn = false, currentPath = '/') => {
   `;
 
   const navLinks = [
-    { href: '/', text: 'Home' },
+    { href: '/home', text: 'Home' },
     { href: '/movies', text: 'Movies' },
     { href: '/series', text: 'Series' },
   ];
@@ -52,8 +52,8 @@ const Header = (isLoggedIn = false, currentPath = '/') => {
           <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex-shrink-0 flex items-center">
               <!-- Logo -->
-              <a href="/" class="flex items-center space-x-2">
-                <img class="h-8 w-8" src="logo.webp" alt="Logo">
+              <a href="/home" class="flex items-center space-x-2">
+                <img class="h-8 w-8" src="/logo.webp" alt="Logo">
                 <span class="text-white text-xl font-bold">MovieMatch</span>
               </a>
             </div>
