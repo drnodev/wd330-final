@@ -25,13 +25,14 @@ const routes = {
   '/detail/:id': Detail,
 };
 
-const router = () => {
+const router = async () => {
   const path            = window.location.pathname;
   const pageContent     = document.getElementById('page-content');
   const headerContainer = document.getElementById('header-container');
   
   let page = routes['/']; 
   let params = {};
+
 
   for (const routePath in routes) {
     const routeParts = routePath.split('/').filter(p => p);
@@ -47,27 +48,27 @@ const router = () => {
       });
 
       if (match) {
-        page = routes[routePath];
+         page = await routes[routePath];
         break;
       }
     }
   }
   
   if (headerContainer) {
-    headerContainer.innerHTML = Header(isLoggedIn, path);
+    headerContainer.innerHTML = await Header(isLoggedIn, path);
     if (isLoggedIn) {
       addUserMenuListener();
     }
   }
   if (pageContent) {
-    pageContent.innerHTML = page(params);
+    pageContent.innerHTML = await page(params);
   }
 };
 
-function renderLayout() {
+async function renderLayout() {
   const footerContainer = document.getElementById('footer-container');
   if (footerContainer) {
-    footerContainer.innerHTML = Footer();
+    footerContainer.innerHTML = await Footer();
   }
   router();
   addNavigationListener();

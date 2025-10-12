@@ -11,7 +11,8 @@ const Series = () => {
         container.innerHTML = `
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             ${trendingMovies.map(movie => `
-            <div data-id="${movie.id}" class="card bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-indigo-500/50 transition-shadow duration-300 group relative cursor-pointer">
+            <a href="/detail/${movie.id}?type=tv" >
+              <div data-id="${movie.id}" class="card bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-indigo-500/50 transition-shadow duration-300 group relative cursor-pointer">
                 <div class="relative w-full h-auto bg-gray-700 flex items-center justify-center">
                   <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title || movie.name}" class="w-full h-auto">
                   <p class="absolute top-0 right-0 w-8 h-8 text-center font-bold rounded-full bg-white flex items-center justify-center">${movie.vote_average.toFixed(1)}</p>
@@ -26,6 +27,7 @@ const Series = () => {
                   <p class="text-sm text-gray-400">${(movie.release_date || movie.first_air_date || '').substring(0, 4)}</p>
                 </div>
               </div>        
+              </a>
             `).join('')}
           </div>
         `;

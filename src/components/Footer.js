@@ -1,4 +1,4 @@
-const Footer = () => {
+const Footer = async () => {
   const currentYear = new Date().getFullYear();
   return `
     <footer class="bg-gray-800 text-white">
