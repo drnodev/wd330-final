@@ -9,9 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Detail from './pages/Detail';
 import {showNotification} from './components/Notification';
-
-
-const isLoggedIn = false;
+import { isLoggedIn } from './services/api';
 
 
 
@@ -55,8 +53,8 @@ const router = async () => {
   }
   
   if (headerContainer) {
-    headerContainer.innerHTML = await Header(isLoggedIn, path);
-    if (isLoggedIn) {
+    headerContainer.innerHTML = await Header(isLoggedIn() !== null, path);
+    if (isLoggedIn() !== null) {
       addUserMenuListener();
     }
   }

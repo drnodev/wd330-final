@@ -1,4 +1,16 @@
+import { logOut } from "../services/api";
+
 const Header = async (isLoggedIn = false, currentPath = '/') => {
+
+  setTimeout(() => {
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        logOut();
+      });
+    }
+  }, 200);
   const loggedOutMenu = `
     <div class="flex items-center space-x-4">
       <a href="/login" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
@@ -24,9 +36,7 @@ const Header = async (isLoggedIn = false, currentPath = '/') => {
         </button>
         <!-- Menú desplegable -->
         <div id="user-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-          <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">My Profile</a>
-          <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-          <a href="/logout" id="logout-button" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign Out</a>
+          <span id="logout-button" class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-400" role="menuitem">Sign Out</span>
         </div>
       </div>
     </div>
